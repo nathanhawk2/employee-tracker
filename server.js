@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 require('console.table');
 const prompt = inquirer.createPromptModule();
 
@@ -8,7 +8,7 @@ const db = mysql.createConnection({ user: 'root', database: 'employee_db' });
 
 
 const viewAllDepts = () => {
-    db.query(`SELECT * FROM department`, (error, deparment) => {
+    db.query(`SELECT * FROM department`, (error, department) => {
         if (error) throw error;
         console.table(department);
         start();
@@ -17,7 +17,7 @@ const viewAllDepts = () => {
 
 const viewAllRoles = () => {
     db.query(`SELECT emp_role.id, emp_role.title, emp_role.salary, 
-    department.name AS department FROM role LEFT JOIN department ON role.department_id = department.id`,
+    department.name AS department FROM emp_role LEFT JOIN department ON emp_role.department_id = department.id`,
         (error, roles) => {
             if (error) throw error;
             console.table(roles);
@@ -26,15 +26,16 @@ const viewAllRoles = () => {
 };
 
 const viewAllEmps = () => {
-    db.query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, 
+    db.query(`SELECT employee.id, employee.first_name, employee.last_name, emp_role.title, emp_role.salary, 
     department.name AS department, CONCAT (manager.first_name, ' ', manager.last_name) AS manager
-    FROM employee LEFT JOIN role ON employee.role_id = role.id 
-    LEFT JOIN department ON role.department_id = department.id
+    FROM employee LEFT JOIN emp_role ON employee.role_id = emp_role.id 
+    LEFT JOIN department ON emp_role.department_id = department.id
     LEFT JOIN employee manager ON employee.manager_id = manager.id
     `,
         (error, employees) => {
             if (error) throw error;
             console.table(employees);
+            start();
         });
 };
 
@@ -55,7 +56,7 @@ const addRole = () => {
         { message: 'Enter Salary of New Role', name: 'salary' },
         { message: 'Enter Department ID of New Role', name: 'department_id' }
     ]).then((input) => {
-        db.query(`INSERT INTO role SET ?`, input, (error) => {
+        db.query(`INSERT INTO emp_role SET ?`, input, (error) => {
             if (error) throw error;
             console.log(`New Role Added`);
             start();
@@ -106,11 +107,9 @@ const start = () => {
             case 'Add a Role': return addRole(); 
             case 'Add an Employee': return addEmployee(); 
             case 'Update Employee Role': return updateEmpRole(); 
-            case 'Exit':
-                console.log("beep boop");
+            case 'Exit': return process.exit();
         }
     });
 };
 
-main();
 start();
