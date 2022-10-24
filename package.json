@@ -1,0 +1,26 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node business"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathanhawk2/employee-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nathanhawk2/employee-tracker/issues"
+  },
+  "homepage": "https://github.com/nathanhawk2/employee-tracker#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "inquirer": "^9.1.4",
+    "mysql": "^2.18.1"
+  }
+}
