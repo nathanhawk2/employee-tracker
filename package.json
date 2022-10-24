@@ -19,8 +19,9 @@
   },
   "homepage": "https://github.com/nathanhawk2/employee-tracker#readme",
   "dependencies": {
+    "console.table": "^0.10.0",
     "dotenv": "^16.0.3",
     "inquirer": "^9.1.4",
-    "mysql": "^2.18.1"
+    "mysql2": "^2.3.3"
   }
 }
